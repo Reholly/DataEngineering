@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "127.0.0.1:9002:9000"      # S3 API
+      - "127.0.0.1:9003:9001"      # MinIO Console
+    environment:
+      MINIO_ROOT_USER: ${S3_ADMIN}
+      MINIO_ROOT_PASSWORD: ${S3_PASSWORD}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+  airflow-webserver:
+    image: apache/airflow:2.1.2
+    restart: always
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres/${DB_NAME}
+      - AIRFLOW__WEBSERVER__SECRET_KEY=${SECRET_KEY}
+      - AIRFLOW__WEBSERVER__BASE_URL=http://localhost:8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+    depends_on:
+      - postgres
+      - airflow-scheduler
+
+  airflow-scheduler:
+    image: apache/airflow:2.1.2
+    restart: always
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres/${DB_NAME}
+    volumes:
+      - ./dags:/opt/airflow/dags
+    depends_on:
+      - postgres
+
+  airflow-init:
+    image: apache/airflow:2.1.2
+    entrypoint: /bin/bash -c "airflow db init"
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres/${DB_NAME}
+    volumes:
+      - ./dags:/opt/airflow/dags
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  minio_data:
