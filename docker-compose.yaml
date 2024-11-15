@@ -33,7 +33,7 @@ services:
       - AIRFLOW__WEBSERVER__SECRET_KEY=${SECRET_KEY}
       - AIRFLOW__WEBSERVER__BASE_URL=http://localhost:8080
     ports:
-      - "8080:8080"
+      - "8081:8080"
     volumes:
       - ./dags:/opt/airflow/dags
     depends_on:
