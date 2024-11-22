@@ -2,18 +2,18 @@ from pyspark.shell import spark
 from pyspark.sql import SparkSession
 
 from config.config import POSTGRES_DSN, DB_PASSWORD, DB_USER, MINIO_ADDR, S3_ADMIN, S3_PASSWORD
-from extract.PostgresDataLoader import PostgresDataLoader
-from extract.MinioDataLoader import MinioDataLoader
-from transform.NewsDataTransformer import NewsDataTransformer
-from transform.MarketDataTransformer import MarketDataTransformer
+from extract.postgres_data_loader import PostgresDataLoader
+from extract.minio_data_loader import MinioDataLoader
+from transform.news_data_transformer import NewsDataTransformer
+from transform.market_data_transformer import MarketDataTransformer
 
 
 def main():
-    spark_session = SparkSession \
-        .builder \
-        .appName("Python Spark SQL basic example") \
-        .getOrCreate()
-
+    spark_session = (SparkSession.builder \
+        .appName("TEST") \
+        .master("spark://spark-master:7077") \
+        .config("spark.jars", "/opt/spark/jars/postgresql-42.7.4.jar") \
+        .getOrCreate())
     properties = {
         "user": DB_USER,
         "password": DB_PASSWORD,

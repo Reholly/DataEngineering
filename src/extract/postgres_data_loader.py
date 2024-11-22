@@ -1,4 +1,3 @@
-
 from pyspark.sql import SparkSession, DataFrame
 
 
@@ -9,16 +8,14 @@ class PostgresDataLoader:
             .select("table_name") \
             .collect()
 
-
         dfs = {}
 
-        print("Загружаю таблицы")
+        print("Loading tables...")
         print(table_list)
         for row in table_list:
             table_name = row.table_name
             print(f"Loading table: {table_name}")
             df = spark_session.read.jdbc(url=dsn, table=table_name, properties=properties)
             dfs[table_name]=df
-
 
         return dfs

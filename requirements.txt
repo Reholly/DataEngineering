@@ -1,4 +1,4 @@
 pyspark
 psycopg2-binary
-dotenv
+python-dotenv
 Minio
