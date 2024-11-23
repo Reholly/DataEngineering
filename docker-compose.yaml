@@ -98,17 +98,6 @@ services:
     networks:
       - spark-network
 
-  app:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    depends_on:
-      - spark-master
-      - postgres
-      - minio
-    networks:
-      - spark-network
-
 volumes:
   postgres_data:
   minio_data:

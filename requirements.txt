@@ -2,3 +2,5 @@ pyspark
 psycopg2-binary
 python-dotenv
 Minio
+pandas
+pyarrow

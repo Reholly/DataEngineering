@@ -4,16 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b441e62a-8529-4627-8549-b938c40a4ca6" name="Changes" comment="правки">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+    <list default="true" id="b441e62a-8529-4627-8549-b938c40a4ca6" name="Changes" comment="добавил докер">
+      <change afterPath="$PROJECT_DIR$/src/article_data_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/transform_market_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/transform_news_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/transformed_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/extract/MinioDataLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/extract/minio_data_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/extract/PostgresDataLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/extract/postgres_data_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spark/jar/postgresql-42.7.4.jar" beforeDir="false" afterPath="$PROJECT_DIR$/spark/jars/postgresql-42.7.4.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/extract/minio_data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/load_news_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/extract/postgres_data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/load_market_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transform/MarketDataTransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/transform/market_data_transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transform/NewsDataTransformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/transform/news_data_transformer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transform/market_data_transformer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transform/news_data_transformer.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,14 +63,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/evgenii/PycharmProjects/data-engineering&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/evgenii/PycharmProjects/data-engineering"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data/postgres" />
@@ -72,9 +79,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/spark/jar" />
       <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/model" />
+      <recent name="$PROJECT_DIR$/src/extract" />
+      <recent name="$PROJECT_DIR$/spark/jars" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager">
@@ -162,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731746547694</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="добавил докер">
+      <option name="closed" value="true" />
+      <created>1732261604935</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1732261604935</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -193,6 +210,7 @@
     <MESSAGE value="added extract" />
     <MESSAGE value="done transform (остался баг с количеством памяти)" />
     <MESSAGE value="правки" />
-    <option name="LAST_COMMIT_MESSAGE" value="правки" />
+    <MESSAGE value="добавил докер" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавил докер" />
   </component>
 </project>

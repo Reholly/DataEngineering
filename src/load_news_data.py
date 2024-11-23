@@ -2,6 +2,8 @@ import json
 
 from minio import Minio
 
+from article_data_utils import deserialize_articles
+
 
 class MinioDataLoader:
     def load_data_from_s3(self, addr: str, admin: str, password: str):
@@ -28,4 +30,4 @@ class MinioDataLoader:
                     except json.JSONDecodeError as e:
                         print(f"Error parsing JSON from file {obj.object_name}: {e}")
 
-        return json_content_list
+        return deserialize_articles(json_content_list)
