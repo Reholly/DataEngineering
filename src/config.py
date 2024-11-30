@@ -12,3 +12,10 @@ DB_PASSWORD=os.getenv("DB_PASSWORD")
 S3_ADMIN=os.getenv("S3_ADMIN")
 S3_PASSWORD=os.getenv("S3_PASSWORD")
 SECRET_KEY=os.getenv("SECRET_KEY")
+
+CH_USER=os.getenv("CH_USER")
+CH_PASSWORD=os.getenv("CH_PASSWORD")
+CH_DB_NAME=os.getenv("CH_DB_NAME")
+CH_HOST=os.getenv("CH_HOST")
+CH_PORT=os.getenv("CH_PORT")
+
