@@ -32,5 +32,7 @@ def transform_news(articles: List[Article], spark: SparkSession):
         .join(unique_categories_df, "category") \
         .select("uuid", "id")
 
+    event_df = event_df.withColumn("appearance_date", F.col("appearance_date").cast("timestamp"))
+
     return NewsData(event_df, unique_locations_df, unique_categories_df, categories_link_df, locations_link_df)
 
