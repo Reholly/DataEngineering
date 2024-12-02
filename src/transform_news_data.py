@@ -34,5 +34,10 @@ def transform_news(articles: List[Article], spark: SparkSession):
 
     event_df = event_df.withColumn("appearance_date", F.col("appearance_date").cast("timestamp"))
 
+    unique_locations_df = unique_locations_df.withColumn("location", F.col("location.name"))
+    unique_locations_df = unique_locations_df.withColumn("location",
+                                     F.trim(F.regexp_replace(unique_locations_df["location"], "'", '')))
+
+
     return NewsData(event_df, unique_locations_df, unique_categories_df, categories_link_df, locations_link_df)
 
