@@ -7,10 +7,10 @@ services:
       - SPARK_MASTER_HOST=spark-master
       - SPARK_MASTER_PORT=7077
     ports:
-      - "8090:8080"  # Порт для интерфейса Spark UI
-      - "7077:7077"  # Порт для подключения воркеров
+      - "8090:8080"
+      - "7077:7077"
     volumes:
-      - ./spark/jars:/opt/spark/jars  # Монтируем директорию с JAR-файлами
+      - ./spark/jars:/opt/spark/jars
     networks:
       - spark-network
 
@@ -20,19 +20,22 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=5g  # Ограничение памяти на воркер
+      - SPARK_WORKER_MEMORY=5g
     volumes:
-      - ./spark/jars:/opt/spark/jars  # Монтируем директорию с JAR-файлами
+      - ./spark/jars:/opt/spark/jars
     networks:
       - spark-network
 
   postgres:
+    container_name: postgres
     image: postgres:13
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -54,17 +57,16 @@ services:
     command: server /data --console-address ":9001"
 
   airflow-webserver:
+    container_name: airflow-webserver
     image: apache/airflow:2.1.2
     restart: always
-    environment:
-      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres/${DB_NAME}
-      - AIRFLOW__WEBSERVER__SECRET_KEY=${SECRET_KEY}
-      - AIRFLOW__WEBSERVER__BASE_URL=http://localhost:8080
+    entrypoint: airflow webserver
+    env_file:
+      - .env
     ports:
-      - "8081:8080"
+      - "8080:8080"
     volumes:
-      - ./dags:/opt/airflow/dags
+      - .\dags:/opt/airflow/dags
     depends_on:
       - postgres
       - airflow-scheduler
@@ -72,25 +74,27 @@ services:
       - spark-network
 
   airflow-scheduler:
+    container_name: airflow-scheduler
     image: apache/airflow:2.1.2
     restart: always
-    environment:
-      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres/postgres
+    entrypoint: airflow scheduler
+    env_file:
+      - .env
     volumes:
-      - ./dags:/opt/airflow/dags
+      - .dags:/opt/airflow/dags
     depends_on:
       - postgres
     networks:
       - spark-network
 
   airflow-init:
+    container_name: airflow-init
     image: apache/airflow:2.1.2
-    entrypoint: /bin/bash -c "airflow db init"
-    environment:
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@postgres/postgres}
+    entrypoint: /bin/bash -c "airflow db init && airflow users create admin"
+    env_file:
+      - .env
     volumes:
-      - ./dags:/opt/airflow/dags
+      - .dags:/opt/airflow/dags
     depends_on:
       - postgres
     networks:
@@ -98,6 +102,7 @@ services:
 
   clickhouse:
     image: yandex/clickhouse-server:latest
+    container_name: clickhouse
     ports:
       - "8123:8123"
       - "9002:9000"
@@ -107,6 +112,8 @@ services:
       CLICKHOUSE_USER: ${CH_USER}
       CLICKHOUSE_PASSWORD: ${CH_PASSWORD}
       CLICKHOUSE_DB: ${CH_DB_NAME}
+    networks:
+      - spark-network
 
 volumes:
   postgres_data:
@@ -116,4 +123,3 @@ volumes:
 networks:
   spark-network:
     driver: bridge
-
