@@ -56,45 +56,56 @@ services:
       - spark-network
     command: server /data --console-address ":9001"
 
-  airflow-webserver:
-    container_name: airflow-webserver
-    image: apache/airflow:2.1.2
+  airflow-web:
+    container_name: air-web
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
-    entrypoint: airflow webserver
+    command: webserver
     env_file:
       - .env
     ports:
       - "8080:8080"
     volumes:
-      - .\dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags
+      - ./spark/jars:/opt/airflow/spark/jars
     depends_on:
       - postgres
-      - airflow-scheduler
+      - airflow-init
     networks:
       - spark-network
 
   airflow-scheduler:
-    container_name: airflow-scheduler
-    image: apache/airflow:2.1.2
+    container_name: air-scheduler
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
-    entrypoint: airflow scheduler
+    command: scheduler
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./airflow-logs:/usr/local/airflow/logs
+      - ./spark/jars:/opt/airflow/spark/jars
     env_file:
       - .env
-    volumes:
-      - .dags:/opt/airflow/dags
     depends_on:
       - postgres
+      - airflow-init
     networks:
       - spark-network
 
   airflow-init:
-    container_name: airflow-init
-    image: apache/airflow:2.1.2
-    entrypoint: /bin/bash -c "airflow db init && airflow users create admin"
+    container_name: air-init
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "airflow db init && airflow users create ${AIRFLOW_USER}"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./spark/jars:/opt/airflow/spark/jars
     env_file:
       - .env
-    volumes:
-      - .dags:/opt/airflow/dags
     depends_on:
       - postgres
     networks:

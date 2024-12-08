@@ -1,10 +1,10 @@
-pyspark~=3.5.3
+pyspark
 psycopg2-binary
-python-dotenv~=1.0.1
-Minio~=7.2.12
+python-dotenv
+Minio
 pandas
 pyarrow
-clickhouse-connect~=0.8.9
-clickhouse-driver~=0.2.9
-apache-airflow~=2.10.3
+clickhouse-connect
+clickhouse-driver
+apache-airflow
 apache-airflow-providers-apache-spark

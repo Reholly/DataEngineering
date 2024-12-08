@@ -48,7 +48,7 @@ def to_sql(df, table_name):
                 value = f"'{value}'"
                 values.append(value)
             elif isinstance(value, str):
-                value = f"'{value.replace("'", "")}'"
+                value  = "'{}'".format(value.replace("'", ""))
                 values.append(value)
             else:
                 values.append(str(value))

@@ -1,26 +1,27 @@
-from airflow import DAG
-from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-from datetime import datetime
+import datetime
+import sys
+
+from airflow.decorators import dag
+from airflow.utils.dates import days_ago
+from main import main
+
+sys.path.append("..")
+
 
 default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2024, 12, 3),
-    'retries': 1,
+    "owner": "airflow",
+    "start_date": days_ago(1),
 }
 
-dag = DAG(
-    'sparl my dag',
+@dag(
+    dag_id="main_dag",
+    description="main dag for all",
     default_args=default_args,
-    description='dag example',
-    schedule_interval='@daily',
+    start_date=datetime.datetime.today(),
+    schedule="@daily",
+    catchup=False,
 )
+def run_main_script():
+   main()
 
-spark_submit_task = SparkSubmitOperator(
-    task_id='run_spark_job',
-    application='../src/main.py',
-    conn_id='spark_default',
-    dag=dag,
-)
-
-spark_submit_task.dry_run()
-
+dag = run_main_script()

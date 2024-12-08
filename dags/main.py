@@ -1,17 +1,17 @@
 from pyspark.sql import SparkSession
 from config import POSTGRES_DSN, DB_PASSWORD, DB_USER, MINIO_ADDR, S3_ADMIN, S3_PASSWORD
 from load_to_clickhouse import load_to_clickhouse
-from src.extract_news_data import load_data_from_s3
+from extract_news_data import load_data_from_s3
 from transform_data_mart import transform_data_mart
 from transform_market_data import transform_market_data
 from transform_news_data import transform_news
 from extract_market_data import load_market_data
 
 def main():
-    jar_files = "../spark/jars/postgresql-42.7.4.jar, ../spark/jars/clickhouse-jdbc-0.7.0.jar,../spark/jars/clickhouse-spark-runtime-3.4_2.12-0.7.3.jar,../spark/jars/httpclient5-5.4.jar"
+    jar_files = "/opt/airflow/spark/jars/postgresql-42.7.4.jar, /opt/airflow/spark/jars/clickhouse-jdbc-0.7.0.jar,/opt/airflow/spark/jars/clickhouse-spark-runtime-3.4_2.12-0.7.3.jar, /opt/airflow/spark/jars/httpclient5-5.4.jar"
     spark_session = (SparkSession
         .builder
-        .master("spark://localhost:7077")
+        .master("spark://spark-master:7077")
         .config("spark.jars", jar_files)
         .getOrCreate())
     properties = {
@@ -30,6 +30,3 @@ def main():
 
     load_to_clickhouse(result_df, transformed_news_data, transformed_market_data)
     spark_session.stop()
-
-if __name__ == "__main__":
-    main()

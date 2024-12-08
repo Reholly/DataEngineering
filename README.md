@@ -6,7 +6,7 @@
 2) Создаем БД airflow в поднятной постгре
 3) Заходим в airflow-webserver и выполняем
 ```commandline
-docker exec -it airflow-webserver /bin/bash
+docker exec -it air-web /bin/bash
 
 airflow users create     --username reholly     --password admin     --firstname admin     --lastname admin     --role Admin     --email eu.ustiantsev@yandex.ru
 
