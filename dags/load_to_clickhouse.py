@@ -1,9 +1,10 @@
+from dags.config import CH_HOST, CH_PORT, CH_USER, CH_PASSWORD, CH_DB_NAME
 from transformed_data import MarketData, NewsData
 import clickhouse_connect
 
 
 def load_to_clickhouse(result_df, news_data: NewsData, market_data: MarketData):
-    client = clickhouse_connect.get_client(host='localhost', port=8123, username='default', password='12345', database='market')
+    client = clickhouse_connect.get_client(host=CH_HOST, port=CH_PORT, username=CH_USER, password=CH_PASSWORD, database=CH_DB_NAME)
 
     for row in to_sql(news_data.Categories, "category"):
         print(row)

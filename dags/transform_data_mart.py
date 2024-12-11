@@ -17,12 +17,7 @@ def transform_data_mart(spark: SparkSession, market_data: MarketData, news_data:
                 total_change="",
                 percentage_change="",
                 speed_change="")])
-    counter = 1
     for row in news_data.Events.collect():
-        counter = counter+1
-        print(counter)
-        if counter == 3:
-            break
 
         event_time = row.appearance_date
 
